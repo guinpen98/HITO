@@ -5,14 +5,14 @@ using NMeCab.Specialized;
 namespace HITO.NLP.NLU
 {
     /// <summary>
-    /// 形態素解析
+    /// 形態素解析器
     /// </summary>
-    public static class MorphologicalAnalysis
+    public static class MorphologicalAnalyzer
     {
         private const string DictionaryDir = @"Assets/AssetStoreTools/dic/ipadic";
 
         /// <summary>
-        /// 解析する
+        /// 形態素解析
         /// </summary>
         /// <param name="text">解析する対象の文字列</param>
         public static List<Morpheme> Analyze(string text)

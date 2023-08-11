@@ -3,7 +3,9 @@ using System.Linq;
 
 namespace HITO.NLP
 {
-
+    /// <summary>
+    /// 形態素
+    /// </summary>
     public class Morpheme
     {
         public string Surface { get; set; }
@@ -11,6 +13,9 @@ namespace HITO.NLP
         public string PartsOfSpeechSection1 { get; set; }
     }
 
+    /// <summary>
+    /// 文章
+    /// </summary>
     public class Sentence
     {
         private class TypePair
@@ -40,6 +45,9 @@ namespace HITO.NLP
             this._nodes = nodes;
         }
 
+        /// <summary>
+        /// 前処理
+        /// </summary>
         public Sentence Preprocess()
         {
             DealUnnecessaryTypes();
@@ -56,7 +64,10 @@ namespace HITO.NLP
         public bool IsCombine(string PartsOfSpeech, string PartsOfSpeechSection1)
             => _combineTypePairs.Any(pair => pair.Forward == PartsOfSpeech && pair.Backward == PartsOfSpeechSection1);
 
-        public int Size() => _nodes.Count;
+        /// <summary>
+        /// 形態素の数
+        /// </summary>
+        public int Size => _nodes.Count;
 
         public bool IsThisType(string type)
         {
@@ -83,6 +94,9 @@ namespace HITO.NLP
             return (new Sentence(_nodes1), new Sentence(_nodes2));
         }
 
+        /// <summary>
+        /// 必要のない形態素を除外
+        /// </summary>
         private void DealUnnecessaryTypes()
         {
             for (int i = 0; i < _nodes.Count; ++i)

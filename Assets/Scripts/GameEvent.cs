@@ -1,5 +1,4 @@
 using System;
-using HITO.NLP;
 
 namespace HITO
 {

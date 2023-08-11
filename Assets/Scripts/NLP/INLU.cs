@@ -1,4 +1,4 @@
-namespace HITO.NLP
+namespace HITO
 {
     /// <summary>
     /// 自然言語生成のインターフェイス

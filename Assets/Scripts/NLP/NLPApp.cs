@@ -3,16 +3,21 @@ using UnityEngine;
 
 namespace HITO.NLP
 {
+    /// <summary>
+    /// NLPアプリケーション
+    /// </summary>
     public class NLPApp : MonoBehaviour, INLU, INLG
     {
 
         public NLUResponse NLU(NLURequest request)
         {
-            var morphologicalAnalysisResult = MorphologicalAnalysis.Analyze(request.Input);
+            var morphologicalAnalysisResult = MorphologicalAnalyzer.Analyze(request.Input);
 
             var sentence = new Sentence(morphologicalAnalysisResult).Preprocess();
 
-            return new NLUResponse(sentence.ToString());
+            var result = PhraseStructureAnalyzer.Analyze(sentence);
+
+            return new NLUResponse(result);
         }
 
         public NLGResponse NLG(NLGRequest request)
