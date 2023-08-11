@@ -1,6 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using System.Linq;
 using NMeCab.Specialized;
 
 namespace HITO.NLP.NLU
@@ -16,12 +15,17 @@ namespace HITO.NLP.NLU
         /// 解析する
         /// </summary>
         /// <param name="text">解析する対象の文字列</param>
-        public static MeCabIpaDicNode[] Analyze(string text)
+        public static List<Morpheme> Analyze(string text)
         {
-            MeCabIpaDicNode[] nodes;
+            List<Morpheme> nodes;
             using (var tagger = MeCabIpaDicTagger.Create(DictionaryDir))
             {
-                nodes = tagger.Parse(text);
+                nodes = tagger.Parse(text).Select(x => new Morpheme()
+                {
+                    Surface = x.Surface,
+                    PartsOfSpeech = x.PartsOfSpeech,
+                    PartsOfSpeechSection1 = x.PartsOfSpeechSection1
+                }).ToList();
             }
             return nodes;
         }

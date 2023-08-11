@@ -1,22 +1,22 @@
 using System.Collections.Generic;
 using System.Linq;
-using NMeCab.Specialized;
 
 namespace HITO.NLP
 {
+
+    public class Morpheme
+    {
+        public string Surface { get; set; }
+        public string PartsOfSpeech { get; set; }
+        public string PartsOfSpeechSection1 { get; set; }
+    }
+
     public class Sentence
     {
         private class TypePair
         {
             public string Forward { get; init; }
             public string Backward { get; init; }
-        }
-
-        public class Morpheme
-        {
-            public string Surface { get; set; }
-            public string PartsOfSpeech { get; set; }
-            public string PartsOfSpeechSection1 { get; set; }
         }
 
         private static readonly List<string> _removeTypes = new List<string> { "副詞", "接続詞", "感動詞", "記号", "フィラー", "その他", "未知語" };

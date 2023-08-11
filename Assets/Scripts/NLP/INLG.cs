@@ -9,6 +9,6 @@ namespace HITO.NLP
         NLGResponse NLG(NLGRequest request);
     }
 
-    public record NLGRequest();
-    public record NLGResponse();
+    public record NLGRequest(string Input);
+    public record NLGResponse(string Input);
 }
