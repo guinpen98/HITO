@@ -22,7 +22,8 @@ public class GameMain : MonoBehaviour
         {
             new InputSystem(),
             new UISystem(),
-            new DebugSystem()
+            new DebugSystem(),
+            new MorphologicalAnalysisSystem()
         };
 
         foreach (BaseSystem system in _systemList)

@@ -19,6 +19,8 @@ namespace HITO.System
         /// </summary>
         public void Input(string text)
         {
+            if (_gameState.IsCharacterTalking) return;
+
             _gameEvent.OnInput.Invoke(text);
             _gameState.TextBox.text = "";
         }

@@ -13,10 +13,16 @@ namespace HITO
     public class GameState
     {
         #region UI
+        [Header("UI")]
         public TMP_InputField TextBox;
+        public TMP_Text CharacterDialog;
+        public float TypingSpeed = 0.05f;
         #endregion
 
-
+        #region System
+        [Header("System")]
+        public bool IsCharacterTalking;
+        #endregion
 
     }
 }
