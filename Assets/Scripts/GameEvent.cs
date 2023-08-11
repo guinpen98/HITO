@@ -1,5 +1,5 @@
 using System;
-using NMeCab.Specialized;
+using HITO.NLP;
 
 namespace HITO
 {
@@ -8,7 +8,13 @@ namespace HITO
     /// </summary>
     public class GameEvent
     {
-        public Action<string> OnInput;
-        public Action<MeCabIpaDicNode[]> OnMorphologicalAnalyze;
+        /// <summary>文章を入力として受け取る</summary>
+        public Action<string> OnInputText;
+        /// <summary>会話システムに文章を入力</summary>
+        public Action<string> OnInputToDialogSystem;
+        /// <summary>言語理解をリクエスト</summary>
+        public Action<NLURequest> RequestNLU;
+        /// <summary>言語理解結果を返す</summary>
+        public Action<NLUResponse> ResponseNLU;
     }
 }

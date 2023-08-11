@@ -1,43 +1,59 @@
 using System.Collections;
 using System.Collections.Generic;
-using HITO;
+using HITO.NLP;
 using HITO.System;
 using UnityEngine;
 
-/// <summary>
-/// エントリーポイント
-/// </summary>
-public class GameMain : MonoBehaviour
+namespace HITO
 {
-    [SerializeField] private GameState _gameState;
-    private GameEvent _gameEvent = new GameEvent();
-
-    private List<BaseSystem> _systemList;
-    private List<IPreUpdateSystem> _preUpdateSystemList;
-    private List<IOnUpdateSystem> _onUpdateSystemList;
-
-    private void Awake()
+    /// <summary>
+    /// エントリーポイント
+    /// </summary>
+    public class GameMain : MonoBehaviour
     {
-        _systemList = new List<BaseSystem>()
-        {
-            new InputSystem(),
-            new UISystem(),
-            new DebugSystem(),
-            new MorphologicalAnalysisSystem()
-        };
+        [Header("GameSystem")]
+        [SerializeField] private GameState _gameState;
+        private GameEvent _gameEvent = new GameEvent();
 
-        foreach (BaseSystem system in _systemList)
+        [Header("NLP")]
+        [SerializeField] private NLPApp _NLPApp;
+
+        private List<BaseSystem> _systemList;
+        private List<IPreUpdateSystem> _preUpdateSystemList;
+        private List<IOnUpdateSystem> _onUpdateSystemList;
+
+        private void Awake()
         {
-            system.Init(_gameState, _gameEvent);
-            system.SetEvent();
-            if (system is IPreUpdateSystem) _preUpdateSystemList.Add(system as IPreUpdateSystem);
-            if (system is IOnUpdateSystem) _onUpdateSystemList.Add(system as IOnUpdateSystem);
+            // システムの初期化
+            _systemList = new List<BaseSystem>()
+            {
+                new GameRule(),
+                new InputSystem(),
+                new UISystem(),
+                new DebugSystem(),
+                new DialogSystem()
+            };
+
+            foreach (BaseSystem system in _systemList)
+            {
+                system.Init(_gameState, _gameEvent);
+                system.SetEvent();
+                if (system is IPreUpdateSystem) _preUpdateSystemList.Add(system as IPreUpdateSystem);
+                if (system is IOnUpdateSystem) _onUpdateSystemList.Add(system as IOnUpdateSystem);
+            }
+
+            // NLP
+            _gameEvent.RequestNLU += InvokeNLU;
         }
 
-    }
+        private void Update()
+        {
 
-    private void Update()
-    {
+        }
 
+        private void InvokeNLU(NLURequest request)
+        {
+            _gameEvent.ResponseNLU(_NLPApp.NLU(request));
+        }
     }
 }

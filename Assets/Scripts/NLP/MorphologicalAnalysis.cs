@@ -3,32 +3,27 @@ using System.Collections.Generic;
 using UnityEngine;
 using NMeCab.Specialized;
 
-namespace HITO.System
+namespace HITO.NLP.NLU
 {
     /// <summary>
     /// 形態素解析
     /// </summary>
-    public class MorphologicalAnalysisSystem : BaseSystem
+    public static class MorphologicalAnalysis
     {
         private const string DictionaryDir = @"Assets/AssetStoreTools/dic/ipadic";
-
-        public override void SetEvent()
-        {
-            _gameEvent.OnInput += Analyze;
-        }
 
         /// <summary>
         /// 解析する
         /// </summary>
         /// <param name="text">解析する対象の文字列</param>
-        public void Analyze(string text)
+        public static MeCabIpaDicNode[] Analyze(string text)
         {
+            MeCabIpaDicNode[] nodes;
             using (var tagger = MeCabIpaDicTagger.Create(DictionaryDir))
             {
-                var nodes = tagger.Parse(text);
-
-                _gameEvent.OnMorphologicalAnalyze.Invoke(nodes);
+                nodes = tagger.Parse(text);
             }
+            return nodes;
         }
     }
 }

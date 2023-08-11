@@ -9,9 +9,12 @@ namespace HITO.System
     {
         public override void SetEvent()
         {
-            _gameEvent.OnInput += ShowCharacterMessage;
+
         }
 
+        /// <summary>
+        /// テキストをアニメーションで表示
+        /// </summary>
         public void ShowCharacterMessage(string message)
         {
             _gameState.IsCharacterTalking = true;

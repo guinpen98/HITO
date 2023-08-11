@@ -1020,6 +1020,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1934364227}
   - component: {fileID: 1934364228}
+  - component: {fileID: 1934364229}
   m_Layer: 0
   m_Name: GameMain
   m_TagString: Untagged
@@ -1059,6 +1060,19 @@ MonoBehaviour:
     CharacterDialog: {fileID: 1419534889}
     TypingSpeed: 0.05
     IsCharacterTalking: 0
+  _NLPApp: {fileID: 1934364229}
+--- !u!114 &1934364229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1934364225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05581c14b4d40477cb7e328a004fea72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2030150022
 GameObject:
   m_ObjectHideFlags: 0

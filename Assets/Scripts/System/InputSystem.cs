@@ -17,11 +17,11 @@ namespace HITO.System
         /// <summary>
         /// Inputを取得する
         /// </summary>
-        public void Input(string text)
+        public void Input(string input)
         {
             if (_gameState.IsCharacterTalking) return;
 
-            _gameEvent.OnInput.Invoke(text);
+            _gameEvent.OnInputText.Invoke(input);
             _gameState.TextBox.text = "";
         }
     }

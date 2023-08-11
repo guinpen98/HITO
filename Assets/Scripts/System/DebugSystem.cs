@@ -9,13 +9,12 @@ namespace HITO.System
     {
         public override void SetEvent()
         {
-            _gameEvent.OnInput += InputLog;
-            _gameEvent.OnMorphologicalAnalyze += MorphologicalAnalyzeLog;
+
         }
 
-        public void InputLog(string text)
+        public void InputLog(string input)
         {
-            Debug.Log(text);
+            Debug.Log(input);
         }
 
         public void MorphologicalAnalyzeLog(MeCabIpaDicNode[] nodes)
