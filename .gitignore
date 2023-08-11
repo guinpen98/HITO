@@ -10,6 +10,9 @@
 /[Ll]ogs/
 /[Uu]ser[Ss]ettings/
 /Assets/AssetStoreTools*
+/Assets/Plugins*
+/Assets/Resources*
+/Packages/com.singularitygroup.hotreload*
 
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
@@ -74,4 +77,5 @@ crashlytics-build.properties
 
 
 .vsconfig
+.DS_Store
 
