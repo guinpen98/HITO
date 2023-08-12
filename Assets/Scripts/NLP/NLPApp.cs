@@ -17,7 +17,7 @@ namespace HITO.NLP
 
             var result = PhraseStructureAnalyzer.Analyze(sentence);
 
-            return new NLUResponse(result);
+            return new NLUResponse(request.Input, result);
         }
 
         public NLGResponse NLG(NLGRequest request)

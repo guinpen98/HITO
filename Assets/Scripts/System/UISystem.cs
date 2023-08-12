@@ -9,7 +9,7 @@ namespace HITO.System
     {
         public override void SetEvent()
         {
-
+            _gameEvent.SetCharacterText += ShowCharacterMessage;
         }
 
         /// <summary>

@@ -44,6 +44,7 @@ namespace HITO
 
             // NLP
             _gameEvent.RequestNLU += InvokeNLU;
+            _gameEvent.RequestNLG += InvokeNLG;
         }
 
         private void Update()
@@ -54,6 +55,11 @@ namespace HITO
         private void InvokeNLU(NLURequest request)
         {
             _gameEvent.ResponseNLU(_NLPApp.NLU(request));
+        }
+
+        private void InvokeNLG(NLGRequest request)
+        {
+            _gameEvent.ResponseNLG(_NLPApp.NLG(request));
         }
     }
 }

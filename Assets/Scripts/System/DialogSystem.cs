@@ -11,6 +11,7 @@ namespace HITO.System
         {
             _gameEvent.OnInputToDialogSystem += UnderstandText;
             _gameEvent.ResponseNLU += DealNLUResponse;
+            _gameEvent.ResponseNLG += DealNLGResponse;
         }
 
         public void UnderstandText(string input)
@@ -21,7 +22,13 @@ namespace HITO.System
 
         public void DealNLUResponse(NLUResponse response)
         {
-            Debug.Log($"NLU result, Input:{response.Input}");
+            var NLGRequest = new NLGRequest(response.Result);
+            _gameEvent.RequestNLG.Invoke(NLGRequest);
+        }
+
+        public void DealNLGResponse(NLGResponse response)
+        {
+            _gameEvent.SetCharacterText.Invoke(response.Input);
         }
     }
 }

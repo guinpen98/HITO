@@ -15,5 +15,11 @@ namespace HITO
         public Action<NLURequest> RequestNLU;
         /// <summary>言語理解結果を返す</summary>
         public Action<NLUResponse> ResponseNLU;
+        /// <summary>言語生成をリクエスト</summary>
+        public Action<NLGRequest> RequestNLG;
+        /// <summary>言語生成結果を返す</summary>
+        public Action<NLGResponse> ResponseNLG;
+        /// <summary>キャラクターのテキストを設定する</summary>
+        public Action<string> SetCharacterText;
     }
 }

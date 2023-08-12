@@ -10,5 +10,5 @@ namespace HITO
     }
 
     public record NLURequest(string Input);
-    public record NLUResponse(string Input);
+    public record NLUResponse(string Input, string Result);
 }
