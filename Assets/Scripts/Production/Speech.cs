@@ -41,7 +41,10 @@ public class Speech : MonoBehaviour
 
     private void OnDestroy()
     {
-        _dictationRecognizer.Stop();
+        if (_dictationRecognizer.Status == SpeechSystemStatus.Running)
+        {
+            _dictationRecognizer.Stop();
+        }
         _dictationRecognizer.Dispose();
     }
 }
