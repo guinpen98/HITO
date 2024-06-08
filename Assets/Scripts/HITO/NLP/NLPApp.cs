@@ -11,7 +11,7 @@ namespace HITO.NLP
 
         public NLUResponse NLU(NLURequest request)
         {
-            var morphologicalAnalysisResult = MorphologicalAnalyzer.Analyze(request.Input);
+            var morphologicalAnalysisResult = HITO.NLP.NLU.MorphologicalAnalyzer.Analyze(request.Input);
 
             var sentence = new Sentence(morphologicalAnalysisResult).Preprocess();
 

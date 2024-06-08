@@ -28,7 +28,7 @@ namespace HITO
             _systemList = new List<BaseSystem>()
             {
                 new GameRule(),
-                new InputSystem(),
+                new HITO.System.InputSystem(),
                 new UISystem(),
                 new DebugSystem(),
                 new DialogSystem()
