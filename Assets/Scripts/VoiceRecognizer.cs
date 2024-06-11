@@ -27,14 +27,26 @@ public class VoiceRecognizer
     {
         if (_dictationRecognizer != null)
         {
-            _dictationRecognizer.Stop();
+            if (_dictationRecognizer.Status == SpeechSystemStatus.Running)
+            {
+                _dictationRecognizer.Stop();
+            }
             _dictationRecognizer.Dispose();
+        }
+    }
+
+    public void Start()
+    {
+        if (_dictationRecognizer.Status == SpeechSystemStatus.Stopped)
+        {
+            _dictationRecognizer.Start();
         }
     }
 
     private void InvokeOnRecognizedAction(string text, ConfidenceLevel confidence)
     {
         OnRecognized.Invoke(text);
+        _dictationRecognizer.Stop();
     }
 
     private void OnError(string error, int hresult)

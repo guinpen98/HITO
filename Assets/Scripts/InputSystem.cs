@@ -23,6 +23,7 @@ public class InputSystem
         if (_isVoiceInput)
         {
             _voiceRecognizer = new VoiceRecognizer();
+            _voiceRecognizer.OnRecognized += SetInput;
         }
         else
         {
@@ -48,6 +49,14 @@ public class InputSystem
         {
             _voiceRecognizer.Dispose();
         }
+    }
+
+    /// <summary>
+    /// 音声認識を開始する
+    /// </summary>
+    public void StartRecognizing(string text)
+    {
+        _voiceRecognizer.Start();
     }
 
     /// <summary>
