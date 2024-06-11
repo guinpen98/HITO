@@ -8,7 +8,7 @@ using TMPro;
 public class InputSystem
 {
     /// <summary>入力イベント</summary>
-    public Action<string> InputEvent;
+    public Action<string> InputEvent { get; set; }
 
     /// <summary>音声入力かどうか</summary>
     [SerializeField] private bool _isVoiceInput;
@@ -37,7 +37,7 @@ public class InputSystem
             return;
         }
 
-        InputEvent?.Invoke(_inputBuffer);
+        InputEvent.Invoke(_inputBuffer);
         Debug.Log("Input: " + _inputBuffer);
         _inputBuffer = null;
     }

@@ -10,7 +10,7 @@ public class AppMain : MonoBehaviour
     private void Start()
     {
         _dialogueSystem = new DialogueSystem();
-        _dialogueSystem.OnInput += _inputSystem.InputEvent;
+        _inputSystem.InputEvent += _dialogueSystem.OnInput;
 
         _inputSystem.Start();
     }
@@ -23,5 +23,6 @@ public class AppMain : MonoBehaviour
     private void OnDestroy()
     {
         _inputSystem.Dispose();
+        AppData.Instance.Dispose();
     }
 }

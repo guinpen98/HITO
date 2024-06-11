@@ -12,12 +12,12 @@ public static class MorphologicalAnalyzer
     /// 形態素解析
     /// </summary>
     /// <param name="text">解析する対象の文字列</param>
-    public static List<Morpheme> Analyze(string text)
+    public static List<MeCabMorpheme> Analyze(string text)
     {
-        List<Morpheme> nodes;
+        List<MeCabMorpheme> nodes;
         using (var tagger = MeCabIpaDicTagger.Create(DictionaryDir))
         {
-            nodes = tagger.Parse(text).Select(x => new Morpheme
+            nodes = tagger.Parse(text).Select(x => new MeCabMorpheme
             (
                 x.Surface,
                 x.PartsOfSpeech,
@@ -31,4 +31,4 @@ public static class MorphologicalAnalyzer
 /// <summary>
 /// 形態素
 /// </summary>
-public record Morpheme(string Surface, string PartsOfSpeech, string PartsOfSpeechSection);
+public record MeCabMorpheme(string Surface, string PartsOfSpeech, string PartsOfSpeechSection);
