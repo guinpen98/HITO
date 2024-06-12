@@ -69,8 +69,8 @@ public static class JumanKNPParser
             // return knpOutput;
 
             // parse KNP output
-            var sentence = ParseResult(knpOutput);
-            var sentenceJson = JsonUtility.ToJson(sentence);
+            Sentence sentence = ParseResult(knpOutput);
+            string sentenceJson = JsonUtility.ToJson(sentence);
             return sentenceJson;
         }
         finally

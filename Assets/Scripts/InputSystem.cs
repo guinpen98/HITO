@@ -11,7 +11,9 @@ public class InputSystem
     public Action<string> InputEvent { get; set; }
 
     /// <summary>音声入力かどうか</summary>
+    public bool IsVoiceInput { get => _isVoiceInput; }
     [SerializeField] private bool _isVoiceInput;
+
     /// <summary>テキストボックス</summary>
     [SerializeField] private TMP_InputField _inputField;
 
@@ -39,7 +41,7 @@ public class InputSystem
         }
 
         InputEvent.Invoke(_inputBuffer);
-        Debug.Log("Input: " + _inputBuffer);
+        Debug.Log($"Input: {_inputBuffer}");
         _inputBuffer = null;
     }
 

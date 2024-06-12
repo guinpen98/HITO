@@ -2,31 +2,31 @@ using System;
 
 public abstract class Singleton<T> : IDisposable where T : class, new()
 {
-    private static T instance = null;
+    private static T _instance = null;
 
     public static T Instance
     {
         get
         {
             CreateInstance();
-            return instance;
+            return _instance;
         }
     }
     public static void CreateInstance()
     {
-        if (instance == null)
+        if (_instance == null)
         {
-            instance = new T();
+            _instance = new T();
         }
     }
 
     public static bool IsExists()
     {
-        return instance != null;
+        return _instance != null;
     }
 
     public virtual void Dispose()
     {
-        instance= null;
+        _instance= null;
     }
 }

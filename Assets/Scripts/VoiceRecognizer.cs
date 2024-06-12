@@ -4,11 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Windows.Speech;
 
-public class VoiceRecognizer
+public class VoiceRecognizer : IVoiceRecognizer
 {
-    /// <summary>音声認識結果を通知する</summary>
     public Action<string> OnRecognized { get; set; }
-
     private DictationRecognizer _dictationRecognizer;
 
     public VoiceRecognizer()
@@ -22,6 +20,13 @@ public class VoiceRecognizer
         _dictationRecognizer.Start();
     }
 
+    public void Start()
+    {
+        if (_dictationRecognizer.Status == SpeechSystemStatus.Stopped)
+        {
+            _dictationRecognizer.Start();
+        }
+    }
 
     public void Dispose()
     {
@@ -32,14 +37,6 @@ public class VoiceRecognizer
                 _dictationRecognizer.Stop();
             }
             _dictationRecognizer.Dispose();
-        }
-    }
-
-    public void Start()
-    {
-        if (_dictationRecognizer.Status == SpeechSystemStatus.Stopped)
-        {
-            _dictationRecognizer.Start();
         }
     }
 

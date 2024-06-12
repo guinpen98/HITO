@@ -11,7 +11,11 @@ public class AppMain : MonoBehaviour
     {
         _dialogueSystem = new DialogueSystem();
         _inputSystem.InputEvent += _dialogueSystem.OnInput;
-        _dialogueSystem.OnResponse += _inputSystem.StartRecognizing;
+
+        if (_inputSystem.IsVoiceInput)
+        {
+            _dialogueSystem.OnResponse += _inputSystem.StartRecognizing;
+        }
 
         _inputSystem.Start();
     }

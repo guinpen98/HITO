@@ -76,11 +76,11 @@ public class JumanKNP : MonoBehaviour
 
         if (!string.IsNullOrEmpty(knpErrors))
         {
-            UnityEngine.Debug.LogError("KNP Error: " + knpErrors);
+            UnityEngine.Debug.LogError($"KNP Error: {knpErrors}");
         }
         else
         {
-            UnityEngine.Debug.Log("KNP Output: " + knpOutput);
+            UnityEngine.Debug.Log($"KNP Output: {knpOutput}");
         }
 
         yield return null;

@@ -5,27 +5,22 @@ using UnityEngine;
 
 public class AppData : Singleton<AppData>
 {
-    public List<DialogueData> DialogueDataList { get; private set; }
-
-    public AppData()
-    {
-        DialogueDataList = new List<DialogueData>();
-    }
+    private List<DialogueData> _dialogueDataList = new List<DialogueData>();
 
     public void InsertDialogueData(uint characterId, string text)
     {
-        if (DialogueDataList == null)
+        if (_dialogueDataList == null)
         {
-            DialogueDataList = new List<DialogueData>();
+            _dialogueDataList = new List<DialogueData>();
         }
-        var id = (uint)DialogueDataList.Count + 1;
-        DialogueDataList.Add(new DialogueData(id, characterId, text));
+        uint id = (uint)_dialogueDataList.Count + 1;
+        _dialogueDataList.Add(new DialogueData(id, characterId, text));
         Debug.Log($"InsertDialogueData: {id}, {Enum.GetName(typeof(CharacterId), characterId)}, {text}");
     }
 
     public void ClearDialogueData()
     {
-        DialogueDataList.Clear();
+        _dialogueDataList.Clear();
     }
 
     public override void Dispose()
