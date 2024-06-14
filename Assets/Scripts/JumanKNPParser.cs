@@ -1,14 +1,16 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Text;
 using System.IO;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using UnityEngine;
 
 public static class JumanKNPParser
 {
-    public static async Task<string> ParseTextAsync(string text)
+    public static async Task<Clause[]> ParseTextAsync(string text)
     {
         // 文字列をShift_JISにエンコード
         byte[] bytes = Encoding.GetEncoding("shift_jis").GetBytes(text);
@@ -69,9 +71,13 @@ public static class JumanKNPParser
             // return knpOutput;
 
             // parse KNP output
-            Sentence sentence = ParseResult(knpOutput);
-            string sentenceJson = JsonUtility.ToJson(sentence);
-            return sentenceJson;
+            UnityEngine.Debug.Log(knpOutput);
+            Clause[] clauses = ParseResult(knpOutput);
+            foreach (var clause in clauses)
+            {
+                UnityEngine.Debug.Log(clause);
+            }
+            return clauses;
         }
         finally
         {
@@ -81,86 +87,180 @@ public static class JumanKNPParser
         }
     }
 
-    public static Sentence ParseResult(string knpOutput)
+    public static Clause[] ParseResult(string knpOutput)
     {
-        Sentence sentence = new Sentence();
-        Phrase currentPhrase = new Phrase();
+        List<Clause> clauses = new List<Clause>();
+        Clause currentClause = null;
 
-        foreach (string line in knpOutput.Split('\n'))
+        // 最初と最後の行は削除
+
+        foreach (string line in knpOutput.Split(new[] { "\n" }, StringSplitOptions.RemoveEmptyEntries))
         {
-            if (line.StartsWith("+ "))
+            if (line.StartsWith("*"))
             {
-                // 新しい基本句の開始
-                if (currentPhrase.Morphemes.Count > 0)
+                if (currentClause != null)
                 {
-                    sentence.Phrases.Add(currentPhrase);
-                    currentPhrase = new Phrase();
+                    clauses.Add(currentClause);
                 }
+                currentClause = new Clause();
+                string mainRep = line.Split(new[] { '<', '>' }, StringSplitOptions.RemoveEmptyEntries).Reverse().ElementAt(1).Split(':')[1];
+                currentClause.SetMainRepresentation(mainRep);
             }
-            else if (line.StartsWith("* "))
+            else if (line.StartsWith("+"))
             {
-                // 新しい文節の開始（ここでは無視）
+                // 追加の構文解析情報をここで扱う
             }
-            else if (!line.StartsWith("#") && !string.IsNullOrWhiteSpace(line))
+            else if (!line.StartsWith("EOS") && !line.StartsWith("#"))
             {
-                // "#" で始まる行や空行は無視する
-                string[] parts = line.Split(' ');
-                if (parts.Length >= 4)
+                var parts = line.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                if (parts.Length > 6)
                 {
-                    // 形態素の情報が正しく4部分に分割されているか確認
-                    currentPhrase.Morphemes.Add(new Morpheme(parts[0], parts[1], parts[2], parts[3]));
+                    var morpheme = new Morpheme(
+                        parts[0],  // Surface
+                        parts[1],  // Reading
+                        parts[2],  // Base form
+                        ParsePartOfSpeech(parts[4]),  // Part of Speech
+                        new Features(string.Join(" ", parts[6..]))  // Features
+                    );
+                    currentClause?.AddMorpheme(morpheme);
                 }
             }
         }
 
-        if (currentPhrase.Morphemes.Count > 0)
+        if (currentClause != null)
         {
-            sentence.Phrases.Add(currentPhrase);
+            clauses.Add(currentClause);
         }
 
-        return sentence;
+        return clauses.ToArray();
+    }
+
+    private static PartOfSpeech ParsePartOfSpeech(string posCode)
+    {
+        return (PartOfSpeech)int.Parse(posCode);
     }
 }
 
+/// <summary>
+/// 形態素
+/// </summary>
 [System.Serializable]
-public record Morpheme
+public class Morpheme
 {
     /// <summary>表層形</summary>
-    public string Surface;
-    /// <summary>品詞</summary>
-    public string PartOfSpeech;
-    /// <summary>活用形</summary>
-    public string Inflection;
+    public string Surface { get; init; }
+    /// <summary>読み</summary>
+    public string Reading { get; init; }
     /// <summary>基本形</summary>
-    public string BaseForm;
+    public string BaseForm { get; init; }
+    /// <summary>品詞</summary>
+    public PartOfSpeech PartOfSpeech { get; init; }
+    /// <summary>活用形</summary>
+    public Features Features { get; set; }
 
-    public Morpheme(string surface, string partOfSpeech, string inflection, string baseForm)
+    public Morpheme(string surface, string reading, string baseForm, PartOfSpeech partOfSpeech, Features features)
     {
         Surface = surface;
-        PartOfSpeech = partOfSpeech;
-        Inflection = inflection;
+        Reading = reading;
         BaseForm = baseForm;
+        PartOfSpeech = partOfSpeech;
+        Features = features;
+    }
+
+    public override string ToString()
+    {
+        return $"Surface: {Surface}, Base: {BaseForm}, POS: {PartOfSpeech}, Features: {Features}";
     }
 }
 
+/// <summary>
+/// 文節
+/// </summary>
 [System.Serializable]
-public class Phrase
+public class Clause
 {
-    public List<Morpheme> Morphemes;
+    /// <summary>形態素</summary>
+    public List<Morpheme> Morphemes { get; set; }
+    /// <summary>主辞表記</summary>
+    public string MainRepresentation { get; set; }
 
-    public Phrase()
+    public Clause()
     {
         Morphemes = new List<Morpheme>();
     }
+
+    public void AddMorpheme(Morpheme morpheme)
+    {
+        Morphemes.Add(morpheme);
+    }
+
+    public void SetMainRepresentation(string mainRep)
+    {
+        MainRepresentation = mainRep;
+    }
+
+    public override string ToString()
+    {
+        return $"Main Rep: {MainRepresentation}, Morphemes: {string.Join(", ", Morphemes)}";
+    }
 }
 
+/// <summary>
+/// 形態素の特徴
+/// </summary>
 [System.Serializable]
-public class Sentence
+public class Features
 {
-    public List<Phrase> Phrases;
+    /// <summary>代表表記</summary>
+    public string RepresentativeNotation { get; init; }
+    /// <summary>カテゴリ</summary>
+    public string Category { get; init; }
+    /// <summary>自立</summary>
+    public bool IsIndependent { get; init; }
+    /// <summary>内容語</summary>
+    public bool IsContentWord { get; init; }
+    /// <summary>タグ単位始</summary>
+    public bool IsStartOfTagUnit { get; init; }
+    /// <summary>文節始</summary>
+    public bool IsStartOfPhrase { get; init; }
+    /// <summary>文節主辞</summary>
+    public bool IsMainOfPhrase { get; init; }
 
-    public Sentence()
+    public Features(string featureStr)
     {
-        Phrases = new List<Phrase>();
+        RepresentativeNotation = Regex.Match(featureStr, "代表表記:([^\\s<]+)").Groups[1].Value;
+        Category = Regex.Match(featureStr, "カテゴリ:([^\\s<]+)").Groups[1].Value;
+        IsIndependent = featureStr.Contains("<自立>");
+        IsContentWord = featureStr.Contains("<内容語>");
+        IsStartOfTagUnit = featureStr.Contains("<タグ単位始>");
+        IsStartOfPhrase = featureStr.Contains("<文節始>");
+        IsMainOfPhrase = featureStr.Contains("<文節主辞>");
     }
+
+    public override string ToString()
+    {
+        return $"Rep: {RepresentativeNotation}, Cat: {Category}, Ind: {IsIndependent}, Cont: {IsContentWord}, TagStart: {IsStartOfTagUnit}, PhraseStart: {IsStartOfPhrase}, MainPhrase: {IsMainOfPhrase}";
+    }
+}
+
+/// <summary>
+/// 品詞
+/// </summary>
+public enum PartOfSpeech
+{
+    Special = 1, // 特殊
+    Verb = 2, // 動詞
+    Adjective = 3, // 形容詞
+    Copula = 4, // 判定詞
+    AuxiliaryVerb = 5, // 助動詞
+    Noun = 6, // 名詞
+    Demonstrative = 7, // 指示詞
+    Adverb = 8, // 副詞
+    Particle = 9, // 助詞
+    Conjunction = 10, // 接続詞
+    Adnominal = 11, // 連体詞
+    Interjection = 12, // 感動詞
+    Prefix = 13, // 接頭辞
+    Suffix = 14, // 接尾辞
+    Undefined = 15 // 未定義語
 }

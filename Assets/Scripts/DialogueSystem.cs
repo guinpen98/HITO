@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -32,11 +32,10 @@ public class DialogueSystem
         // }
 
         // JUMANとKNPで解析する
+        Clause[] knpResult = null;
         try
         {
-            string response = await JumanKNPParser.ParseTextAsync(text);
-            OnResponse?.Invoke(response);
-            Debug.Log($"Response: {response}");
+            knpResult = await JumanKNPParser.ParseTextAsync(text);
         }
         catch (Exception ex)
         {
@@ -48,6 +47,8 @@ public class DialogueSystem
         // var response = string.Empty;
         // AppData.Instance.InsertDialogueData((uint)CharacterId.NPC, response);
         // OnResponse.Invoke(response);
+
+        OnResponse?.Invoke("応答が生成されました。");
     }
 }
 
