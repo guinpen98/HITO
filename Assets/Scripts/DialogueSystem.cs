@@ -4,56 +4,64 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class DialogueSystem
+namespace Chat
 {
-    /// <summary>入力を通知する</summary>
-    public Action<string> OnInput { get; set; }
-    ///<summary>応答を通知する</summary>
-    public Action<string> OnResponse { get; set; }
-
-    public DialogueSystem()
+    public class DialogueSystem
     {
-        OnInput += async (text) => await Dialogue(text);
-    }
+        /// <summary>入力を通知する</summary>
+        public Action<string> OnInput { get; set; }
+        ///<summary>応答を通知する</summary>
+        public Action<string> OnResponse { get; set; }
 
-    /// <summary>
-    /// 対話
-    /// </summary>
-    private async Task Dialogue(string text)
-    {
-        // 会話データを保存
-        AppData.Instance.InsertDialogueData((uint)CharacterId.Player, text);
-
-        // 入力を解析する
-        // var morphemes = MorphologicalAnalyzer.Analyze(text);
-        // foreach (var morpheme in morphemes)
-        // {
-        //     Debug.Log($"MorphologicalAnalyzer: {morpheme.Surface}, {morpheme.PartsOfSpeech}, {morpheme.PartsOfSpeechSection}");
-        // }
-
-        // JUMANとKNPで解析する
-        Clause[] knpResult = null;
-        try
+        public DialogueSystem()
         {
-            knpResult = await JumanKNPParser.ParseTextAsync(text);
-        }
-        catch (Exception ex)
-        {
-            Debug.LogError("解析エラー: " + ex.Message);
-            OnResponse?.Invoke("解析エラーが発生しました。");
+            OnInput += async (text) => await Dialogue(text);
         }
 
-        // TODO: 解析結果に基づいて応答を生成する
-        // var response = string.Empty;
-        // AppData.Instance.InsertDialogueData((uint)CharacterId.NPC, response);
-        // OnResponse.Invoke(response);
+        /// <summary>
+        /// 対話
+        /// </summary>
+        private async Task Dialogue(string text)
+        {
+            // 会話データを保存
+            AppData.Instance.InsertDialogueData((uint)CharacterId.Player, text);
 
-        OnResponse?.Invoke("応答が生成されました。");
+            // 入力を解析する
+            // var morphemes = MorphologicalAnalyzer.Analyze(text);
+            // foreach (var morpheme in morphemes)
+            // {
+            //     Debug.Log($"MorphologicalAnalyzer: {morpheme.Surface}, {morpheme.PartsOfSpeech}, {morpheme.PartsOfSpeechSection}");
+            // }
+
+            // JUMANとKNPで解析する
+            Clause[] knpResult = null;
+            try
+            {
+                knpResult = await JumanKNPParser.ParseTextAsync(text);
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError("解析エラー: " + ex.Message);
+                OnResponse?.Invoke("解析エラーが発生しました。");
+            }
+
+            // var response = string.Empty;
+            // AppData.Instance.InsertDialogueData((uint)CharacterId.NPC, response);
+            // OnResponse.Invoke(response);
+
+            OnResponse?.Invoke(text);
+        }
+
+        String generateResponse(Clause[] knpResult)
+        {
+            // TODO: 解析結果に基づいて応答を生成する
+            return "応答が生成されました。";
+        }
     }
-}
 
-public enum CharacterId
-{
-    Player = 1,
-    NPC = 2,
+    public enum CharacterId
+    {
+        Player = 1,
+        NPC = 2,
+    }
 }

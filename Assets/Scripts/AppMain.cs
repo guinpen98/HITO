@@ -2,32 +2,37 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AppMain : MonoBehaviour
+namespace Chat
 {
-    [SerializeField] private InputSystem _inputSystem;
-    private DialogueSystem _dialogueSystem;
-
-    private void Start()
+    public class AppMain : MonoBehaviour
     {
-        _dialogueSystem = new DialogueSystem();
-        _inputSystem.InputEvent += _dialogueSystem.OnInput;
+        [SerializeField] private InputSystem _inputSystem;
+        [SerializeField] private OutputSystem _outputSystem;
+        private DialogueSystem _dialogueSystem;
 
-        if (_inputSystem.IsVoiceInput)
+        private void Start()
         {
-            _dialogueSystem.OnResponse += _inputSystem.StartRecognizing;
+            _dialogueSystem = new DialogueSystem();
+            _inputSystem.InputEvent += _dialogueSystem.OnInput;
+            _dialogueSystem.OnResponse += _outputSystem.OnOutput;
+
+            if (_inputSystem.IsVoiceInput)
+            {
+                _dialogueSystem.OnResponse += _inputSystem.StartRecognizing;
+            }
+
+            _inputSystem.Start();
         }
 
-        _inputSystem.Start();
-    }
+        private void Update()
+        {
+            _inputSystem.Update();
+        }
 
-    private void Update()
-    {
-        _inputSystem.Update();
-    }
-
-    private void OnDestroy()
-    {
-        _inputSystem.Dispose();
-        AppData.Instance.Dispose();
+        private void OnDestroy()
+        {
+            _inputSystem.Dispose();
+            AppData.Instance.Dispose();
+        }
     }
 }

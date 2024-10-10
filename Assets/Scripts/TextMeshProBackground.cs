@@ -5,53 +5,56 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(TextMeshProUGUI))]
-public class TextMeshProBackground : MonoBehaviour
+namespace Chat
 {
-    private const float Tolerance = 0.00001f;
-
-    [SerializeField] private Image _image;
-    [SerializeField] private float _paddingWidth;
-    [SerializeField] private float _paddingHeight;
-
-    private TextMeshProUGUI _tmp;
-    private float _preWidth;
-    private float _preHeight;
-
-    private void Start()
+    [RequireComponent(typeof(TextMeshProUGUI))]
+    public class TextMeshProBackground : MonoBehaviour
     {
-        _tmp = GetComponent<TextMeshProUGUI>();
-    }
+        private const float Tolerance = 0.00001f;
 
-    private void Update()
-    {
-        if (Math.Abs(_preWidth - _tmp.preferredWidth) < Tolerance && Math.Abs(_preHeight - _tmp.preferredHeight) < Tolerance) return;
+        [SerializeField] private Image _image;
+        [SerializeField] private float _paddingWidth;
+        [SerializeField] private float _paddingHeight;
 
-        UpdateTMProUGUISizeDelta();
-        UpdateImageSizeDelta();
-    }
+        private TextMeshProUGUI _tmp;
+        private float _preWidth;
+        private float _preHeight;
 
-    /// <summary>
-    /// RectTransform.sizeDeltaをテキストにぴっちりさせる
-    /// </summary>
-    private void UpdateTMProUGUISizeDelta()
-    {
-        _preWidth = _tmp.preferredWidth;
-        _preHeight = _tmp.preferredHeight;
-        _tmp.rectTransform.sizeDelta = new Vector2(_preWidth, _preHeight);
-    }
-
-    /// <summary>
-    /// 背景のImageのRectTransform.sizeDeltaを指定したパディングで更新
-    /// </summary>
-    private void UpdateImageSizeDelta()
-    {
-        if (_preHeight == 0 || _preWidth == 0)
+        private void Start()
         {
-            _image.rectTransform.sizeDelta = Vector2.zero;
-            return;
+            _tmp = GetComponent<TextMeshProUGUI>();
         }
 
-        _image.rectTransform.sizeDelta = new Vector2(_preWidth + _paddingWidth, _preHeight + _paddingHeight);
+        private void Update()
+        {
+            if (Math.Abs(_preWidth - _tmp.preferredWidth) < Tolerance && Math.Abs(_preHeight - _tmp.preferredHeight) < Tolerance) return;
+
+            UpdateTMProUGUISizeDelta();
+            UpdateImageSizeDelta();
+        }
+
+        /// <summary>
+        /// RectTransform.sizeDeltaをテキストにぴっちりさせる
+        /// </summary>
+        private void UpdateTMProUGUISizeDelta()
+        {
+            _preWidth = _tmp.preferredWidth;
+            _preHeight = _tmp.preferredHeight;
+            _tmp.rectTransform.sizeDelta = new Vector2(_preWidth, _preHeight);
+        }
+
+        /// <summary>
+        /// 背景のImageのRectTransform.sizeDeltaを指定したパディングで更新
+        /// </summary>
+        private void UpdateImageSizeDelta()
+        {
+            if (_preHeight == 0 || _preWidth == 0)
+            {
+                _image.rectTransform.sizeDelta = Vector2.zero;
+                return;
+            }
+
+            _image.rectTransform.sizeDelta = new Vector2(_preWidth + _paddingWidth, _preHeight + _paddingHeight);
+        }
     }
 }

@@ -1,11 +1,15 @@
 using System;
 
-public interface IVoiceRecognizer
+namespace Chat
 {
-    /// <summary>音声認識結果を通知する</summary>
-    public Action<string> OnRecognized { get; set; }
+    /// <summary>音声認識インターフェース</summary>
+    public interface IVoiceRecognizer
+    {
+        /// <summary>音声認識結果を通知する</summary>
+        public Action<string> OnRecognized { get; set; }
 
-    public void Start();
+        public void Start();
 
-    public void Dispose();
+        public void Dispose();
+    }
 }

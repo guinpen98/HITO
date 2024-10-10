@@ -1,32 +1,35 @@
 using System;
 
-public abstract class Singleton<T> : IDisposable where T : class, new()
+namespace Chat
 {
-    private static T _instance = null;
-
-    public static T Instance
+    public abstract class Singleton<T> : IDisposable where T : class, new()
     {
-        get
+        private static T _instance = null;
+
+        public static T Instance
         {
-            CreateInstance();
-            return _instance;
+            get
+            {
+                CreateInstance();
+                return _instance;
+            }
         }
-    }
-    public static void CreateInstance()
-    {
-        if (_instance == null)
+        public static void CreateInstance()
         {
-            _instance = new T();
+            if (_instance == null)
+            {
+                _instance = new T();
+            }
         }
-    }
 
-    public static bool IsExists()
-    {
-        return _instance != null;
-    }
+        public static bool IsExists()
+        {
+            return _instance != null;
+        }
 
-    public virtual void Dispose()
-    {
-        _instance= null;
+        public virtual void Dispose()
+        {
+            _instance= null;
+        }
     }
 }
