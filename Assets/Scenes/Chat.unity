@@ -647,6 +647,7 @@ GameObject:
   m_Component:
   - component: {fileID: 335858929}
   - component: {fileID: 335858930}
+  - component: {fileID: 335858931}
   m_Layer: 0
   m_Name: "\u76EE"
   m_TagString: Untagged
@@ -721,6 +722,27 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &335858931
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 335858928}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 29694156e1b7cdc49a3cd87f4b63fe07, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &349192718
 GameObject:
   m_ObjectHideFlags: 0
@@ -1694,6 +1716,7 @@ GameObject:
   m_Component:
   - component: {fileID: 967065621}
   - component: {fileID: 967065622}
+  - component: {fileID: 967065623}
   m_Layer: 0
   m_Name: "\u53E3"
   m_TagString: Untagged
@@ -1768,6 +1791,27 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &967065623
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 967065620}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: fd0e4f9d35edd7c40a044f5865e99af4, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &990484386
 GameObject:
   m_ObjectHideFlags: 0
@@ -2215,6 +2259,8 @@ MonoBehaviour:
     _inputField: {fileID: 776820524}
   _outputSystem:
     _isShowAvatar: 1
+    _yukkuriController:
+      _animator: {fileID: 967065623}
 --- !u!4 &1393247994
 Transform:
   m_ObjectHideFlags: 0

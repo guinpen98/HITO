@@ -16,6 +16,8 @@ namespace Chat
 
         private IVoiceOutputSystem _voiceOutputSystem;
 
+        [SerializeField] private YukkuriController _yukkuriController;
+
         public OutputSystem()
         {
             OnOutput += async (text) => await Output(text);
@@ -34,6 +36,8 @@ namespace Chat
                 _voiceOutputSystem = new BoyomichanSystem();
             }
 
+            _yukkuriController.StartLipSync();
+
             try
             {
                 await _voiceOutputSystem.PlayVoiceAsync(text);
@@ -42,6 +46,10 @@ namespace Chat
             {
                 Debug.LogError("音声出力エラー: " + ex.Message);
             }
+
+            // 1秒後にリップシンクを止める
+            await Task.Delay(TimeSpan.FromSeconds(1));
+            _yukkuriController.StopLipSync();
         }
 
         public void Dispose()

@@ -6,10 +6,10 @@ namespace Chat
     public interface IAvatarController
     {
         /// <summary>アバターを表示する</summary>
-        public void ShowAvatar();
+        // public void ShowAvatar();
 
         /// <summary>アバターを非表示にする</summary>
-        public void HideAvatar();
+        // public void HideAvatar();
 
         /// <summary>リップシンクを開始する</summary>
         public void StartLipSync();
@@ -18,12 +18,12 @@ namespace Chat
         public void StopLipSync();
 
         /// <summary>瞬きを開始する</summary>
-        public void StartBlink();
+        // public void StartBlink();
 
         /// <summary>瞬きを停止する</summary>
-        public void StopBlink();
+        // public void StopBlink();
 
         /// <summary>表情を設定する</summary>
-        public void SetExpression(string expression);
+        // public void SetExpression(string expression);
     }
 }
